@@ -69,37 +69,39 @@ else:
 	if sys.argv[2:] != []:
 		#Looping for flags
 		for arg in sys.argv[2:]:
-			if "-" in arg:
-				if called_flag("all"):
-					#Print all exif tags in file
-					exif = md.read_exif()
-					for m in exif:
-						print(m + "=" + str(exif[m]))
-					sys.exit(0)
-				else:
-					for arg in sys.argv[2:]:
-						for flag in FLAGS:
-							if arg in FLAGS[flag]:
-								try:
-									tag_exif = md.read_exif()[flag]
-
-									tag_name = flag
-									for tag in TAGS:
-										if flag in TAGS[tag]:
-											tag_name = tag
-
-									print("{}: {}".format(tag_name,tag_exif))
-									sys.exit(0)
-								except KeyError:
-									print("It was not possible to extract extract tag. Exception: KeyError: {}".format(e))
-								except Exception as e:
-										print("An unexpected error ocurred while retrieving tag {} \n\nError: {}".format(flag,e))
-
-						print("Invalid flag {} provided".format(arg))
-						sys.exit(1)
-			else:
+			if "-" not in arg:
 				print("Invalid argument {}".format(arg))
 				sys.exit(1)
+
+			if called_flag("all"):
+				#Print all exif tags in file
+				exif = md.read_exif()
+				for m in exif:
+					print(m + "=" + str(exif[m]))
+				sys.exit(0)
+			else:
+				for arg in sys.argv[2:]:
+					for flag in FLAGS:
+						if arg in FLAGS[flag]:
+							try:
+								tag_exif = md.read_exif()[flag]
+
+								#Check if there is a fancy name for the tag, using tag otherwise
+								tag_name = flag
+
+								for tag in TAGS:
+									if flag in TAGS[tag]:
+										tag_name = tag
+
+								print("{}: {}".format(tag_name,tag_exif))
+								sys.exit(0)
+							except KeyError:
+								print("It was not possible to extract extract tag. Exception: KeyError: {}".format(e))
+							except Exception as e:
+									print("An unexpected error ocurred while retrieving tag {} \n\nError: {}".format(flag,e))
+
+					print("Invalid flag {} provided".format(arg))
+					sys.exit(1)
 	else:
 		print("No options provided, printing help\n")
 		print(HELP)
