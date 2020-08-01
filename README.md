@@ -10,7 +10,7 @@ While there is only one flag accepted from metadata, it's easily to add new flag
 
 # How to add new flags?
 
-Just edit the script adding the tag to be retrieving and the options user will need to enter.
+Just edit the script adding the tag to be retrieved and the options user will need to enter.
 
 ```
 FLAGS = {
